@@ -18,7 +18,7 @@ A 3x3 kernel is nearly always used as it can be used to multiple times to create
 **4.	How are kernels initialized?**
 
 Kernels are usually initialized randomly and then during training the kernel values are updated to best fit the input data.
-Other strategies used are:
+Other strategies used to initiaze kernels are:
 
 *	Set all values to 1 or 0 or another constant
 
