@@ -24,7 +24,7 @@ Other strategies used to initiaze kernels are:
 
 *	Sample from a distribution, such as a normal or uniform distribution
 
-**5.	What happens during the training of a DNN?**
+**5.	What happens during the training of a DNN? **
 
 During the training of the DNN, the model first learns to detect edges and gradients. Using these it learns to detect patterns, then parts of object, then object and finally an entire scene. Each of these happens in stages with the first stage being learning of the edges and the last stage being learning the entire scene.
 
