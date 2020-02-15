@@ -1,6 +1,7 @@
-Total number of parameters: **18,310**
+Final Validation Accuracy: **99.4%** (**19th** epoch)
+Total number of paramaters: **18,310**
+Epochs: 19
 
-Achieved **99.4%** test accuracy in the **19th** epoch
 
 Logs of the epochs:
 
