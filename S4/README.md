@@ -1,10 +1,11 @@
 Total number of parameters: **18,310**
 
-Achieved **99.4%** test accuracy in **19th** epoch
+Achieved **99.4%** test accuracy in the **19th** epoch
 
 Logs of the epochs:
 
 0%|          | 0/938 [00:00<?, ?it/s]/usr/local/lib/python3.6/dist-packages/ipykernel_launcher.py:76: UserWarning: Implicit dimension choice for log_softmax has been deprecated. Change the call to include dim=X as an argument.
+
 epoch= 1 loss=0.08253111690282822 batch_id=937: 100%|██████████| 938/938 [00:16<00:00, 55.32it/s]
 
 train set: Accuracy: 59031/60000 (98.39%)
