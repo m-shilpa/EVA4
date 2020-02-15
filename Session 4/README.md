@@ -1,5 +1,7 @@
 Final Validation Accuracy: **99.4%** (**19th** epoch)
+
 Total number of paramaters: **18,310**
+
 Epochs: 19
 
 
