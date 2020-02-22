@@ -3,7 +3,7 @@ The goal is to train a model on MNIST dataset to:
 * Within 15 epochs
 * Less than 10k parameters
 
-# Code 1
+<a href="https://github.com/mshilpaa/EVA4/blob/master/Session%205/Code%201.ipynb"><h1>Code 1</h1></a>
 
 **Target:**
 * Basic model
@@ -18,7 +18,7 @@ The goal is to train a model on MNIST dataset to:
 
 * Model is overfitting.
 
-# Code 2
+<a href="https://github.com/mshilpaa/EVA4/blob/master/Session%205/Code%202.ipynb"><h1>Code 2</h1></a>
 
 **Target:**
 * Since the previous model was overfitting, added dropout of 0.05
@@ -30,11 +30,11 @@ The goal is to train a model on MNIST dataset to:
 
 **Analysis:**
 
-* Model is still overfitting.
-* Reached the desired accuracy only once.
+* Model is still overfitting but not as much as previous model.
+* The gap between train and test accuracy has reduced. Regularization has worked.
 
 
-# Code 3
+<a href="https://github.com/mshilpaa/EVA4/blob/master/Session%205/Code%203.ipynb"><h1>Code 3</h1></a>
 
 **Target:**
 * Removed the big kernel in the last layer and used GAP.
@@ -47,12 +47,13 @@ The goal is to train a model on MNIST dataset to:
 **Analysis:**
 
 * Model is underfitting.
+* Train and test accuracy has reduced because the model capacity has reduced from 10,272 parameters to 6,836.
 * Capacity of the model can be increased.
 
-# Code 4
+<a href="https://github.com/mshilpaa/EVA4/blob/master/Session%205/Code%204.ipynb"><h1>Code 4</h1></a>
 
 **Target:**
-* Added another block of conv2d --> relu --> BatchNorm2d --> dropout
+* Added another block of conv2d --> relu --> BatchNorm2d --> dropout before GAP.
 
 **Result:**
 * Parameters: 8,808
@@ -62,12 +63,15 @@ The goal is to train a model on MNIST dataset to:
 **Analysis:**
 
 * Model achieved the target accuracy only once.
+* Adding more capacity to the model by introducing an extra layer has shown improvements in test accuracy. Maybe make slight changes to the architecture can push the model to achieve 99.4 consistently in more no. of epochs. Should try increasing the capacity of model a little more.
 
-# Code 5
+
+<a href="https://github.com/mshilpaa/EVA4/blob/master/Session%205/Code%205.ipynb"><h1>Code 5</h1></a>
 
 **Target:**
-*  Instead of using 3x3 kernel to reduce no. of channels to 10 in the layer before GAP, use a 1x1 kernel. 
-* When 1x1 used after GAP acts like an FC
+* Increased capacity of model by using 1x1 after GAP.
+* Earlier i was using 3x3 kernel to reduce no. of channels to 10 in the layer before GAP, but now used a 1x1 kernel to do the same. 
+* 1x1 acts like a fully connected layer when used after GAP which helps in better classification of the dataset than when used GAP as last layer. So used the 1x1 kernel after GAP. 
 
 **Result:**
 * Parameters: 9,844
@@ -77,12 +81,13 @@ The goal is to train a model on MNIST dataset to:
 **Analysis:**
 
 * Model is underfitting.
+* Using 1x1 after GAP has helped
 * Achieved desired test accuracy.But the accuracy is not consistent. The test accuracy is quite irregular after 8th epoch. So should try StepLR. 
 
-# Code 6
+<a href="https://github.com/mshilpaa/EVA4/blob/master/Session%205/Code%206.ipynb"><h1>Code 6</h1></a>
 
 **Target:**
-*  Used StepLR
+*  Used StepLR to change learning rate from 8th epoch onwards 
 
 **Result:**
 * Parameters: 9,844
@@ -94,9 +99,10 @@ The goal is to train a model on MNIST dataset to:
 * Model is underfitting.
 * Achieved desired test accuracy consistently.
 
-# Code 7
+<a href="https://github.com/mshilpaa/EVA4/blob/master/Session%205/Code%207.ipynb"><h1>Code 7</h1></a>
 
 **Target:**
+* Tried to adjust the model to reduce no. of parameters.
 * Reduced no. of output channels in the last few layers since mnist is a simple dataset with not many features to learn.
 * Used MultiStepLR
 
@@ -107,7 +113,7 @@ The goal is to train a model on MNIST dataset to:
 
 **Analysis:**
 
-* After reducing channel size observed stagnent stop in test accuracy, so introduced MultiStepLR for learning rate to change from those places.
+* After reducing channel size, observed spots where test accuracy becomes stagnant, so introduced MultiStepLR for learning rate to change from those places.
 * The model is underfitting.
 * Achieved the desired accuracy within 10k parameters.
 
