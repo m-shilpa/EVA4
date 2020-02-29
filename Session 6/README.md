@@ -5,21 +5,33 @@
 # Misclassified images:
 
 # Without L1 and L2 regularization applied
+
 <img src="./no l1l2.png"/>
+
 # With L1 regularization applied
+
 <img src="./l1.png"/>
+
 # With L2 regularization applied
+
 <img src="./l2.png"/>
+
 # With L1 and L1 regularization applied
+
 <img src="./l1l2.png"/>
 
 # Other plots:
+
 # L1 = 0.00005 L2 = 0.1
+
 <img src="0_00005.png"/>
+
 # L1 = 0.00005 L2 = 0.05
+
 <img src="0_00005-0_05.png"/>
 
 # L1 = 0.00005 L2 = 0.0005
+
 <img src="0_00005-0_05.png"/>
 
 # Observations:
