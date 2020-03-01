@@ -24,15 +24,12 @@
 # Other plots:
 
 <a href="l1_0.00005 l2_0.1.ipynb"><h1> L1 = 0.00005 L2 = 0.1<h1></a>
-
 <img src="0_00005-0_1.png"/>
 
 <a href="l1_0.00005 l2_0.05.ipynb"><h1> L1 = 0.00005 L2 = 0.05<h1></a>
-
 <img src="0_00005-0_05(1).png"/>
 
 <a href="l1_=_0_00005_l2_=_0_00005.ipynb"><h1> L1 = 0.00005 L2 = 0.0005<h1></a>
-
 <img src="0_00005.png"/>
 
 # Observations:
