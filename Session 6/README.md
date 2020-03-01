@@ -1,6 +1,6 @@
 # Plot:
 
-<a href="l1_0.0005 l2_0.0005.ipynb"><h1> L1 = 0.00005 L2 = 0.1<h1></a>
+<a href="l1_0.0005 l2_0.0005.ipynb"><h1> L1 = 0.0005 L2 = 0.0005<h1></a>
 <img src="0_0005.png"/>
 
 # Misclassified images:
