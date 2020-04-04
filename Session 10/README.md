@@ -1,14 +1,43 @@
-Assignment: 
+Epochs: 50
 
-Pick your last code
-Make sure  to Add CutOut to your code. It should come from your transformations (albumentations)
-Use this repo: https://github.com/davidtvs/pytorch-lr-finder (Links to an external site.) 
-Move LR Finder code to your modules
-Implement LR Finder (for SGD, not for ADAM)
-Implement ReduceLROnPlatea: https://pytorch.org/docs/stable/optim.html#torch.optim.lr_scheduler.ReduceLROnPlateau (Links to an external site.)
-Find best LR to train your model
-Use SDG with Momentum
-Train for 50 Epochs. 
-Show Training and Test Accuracy curves
-Target 88% Accuracy.
-Run GradCAM on the any 25 misclassified images. Make sure you mention what is the prediction and what was the ground truth label.
+Train Accuracy:
+
+Test Accuracy:
+
+Plot of Lr-Finder:
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/lr_finder.png" alt='lr_finder'/>
+
+Plot of train and test accuracy:
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/train_test_plot.png" alt='train test plot'/>
+
+Gradcam for misclassified images:
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_0.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_1.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_2.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_3.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_4.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_5.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_6.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_7.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_8.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_9.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_10.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_11.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_12.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_13.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_14.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_15.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_16.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_17.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_18.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_19.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_20.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_21.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_22.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_23.png"/>
+<img src="https://github.com/mshilpaa/EVA4/edit/master/Session%2010/images/gradcam_24.png"/>
+
+
+
+
+
