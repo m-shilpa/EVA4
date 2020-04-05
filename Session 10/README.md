@@ -1,8 +1,8 @@
 Epochs: 50
 
-Train Accuracy:90
+Train Accuracy:98.67 (epoch 50)
 
-Test Accuracy:90
+Test Accuracy:90.85 (epoch 39)
 
 Plot of Lr-Finder:
 <img src="https://github.com/mshilpaa/EVA4/blob/master/Session%2010/images/lr_finder.png" alt='lr_finder'/>
