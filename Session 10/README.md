@@ -6,6 +6,8 @@ Train Accuracy:98.67 (epoch 50)
 
 Test Accuracy:90.85 (epoch 39)
 
+Final Code : <a href="https://github.com/mshilpaa/EVA4/blob/master/Session%2010/main.ipynb">Link</a>
+
 Lr-Finder: <a href="https://github.com/mshilpaa/EVA4/blob/master/Session%2010/files/lr_finder.py">Code</a>
 
 Plot:
