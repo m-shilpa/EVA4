@@ -130,3 +130,10 @@ Labels - 52MB
 * Resizing the images to 480x640 gave good results.
 * But this had the overhead of resizing the input as well as the ouput since the desired output image size was 224x224.
 *To avoid atleast one resize tried resizing the images to 448x448 to get the output image size of 224x224. This gave good depth images too.
+
+# Team Members:
+Shilpa M <br/>
+Sushmitha M Katti <br/>
+Deeksha <br/>
+Noopur <br/>
+Srinivasan <br/>
