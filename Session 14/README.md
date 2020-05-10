@@ -9,11 +9,11 @@
   * Background Images: 100 images of size 224x224 and image format JPG. The images are mostly of interior of houses.
     Some of them are:
     
-    <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/background.png' alt='Images width=200/>
+    <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/background.png' alt='Background Images'/>
   * Foreground Images: 100 images of random sizes but less than 120 and image format PNG. These images consisted of human beings.
     Some of them are:
     
-    <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/Foreground.png' alt='Images width=200/>
+    <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/Foreground.png' alt='Foreground Images'/>
  
 * Background of the foreground images were removed using Power Point
 * Masks of the foreground images were generated using gimp.
@@ -23,22 +23,25 @@
   
 * Overlay each of the foreground images randomly 20 times on each background images.
 * Horizontal Flip the foreground images and again overlap them randomly 20 times on each background images.
-* For each overlayed foreground image overlay it's corresponding mask at the same position on a 224x224 black image. This hence generates the mask of the corresponding overlayed images.
+* For each overlayed foreground image overlay it's corresponding mask at the same position on a 224x224 black image. This hence generates the mask of the corresponding overlayed images. <a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/data_creation-reduced_image_quality.ipynb'>Link to the code</a>
 * Now the dataset has a total of:
-  * 100*(100*2)*20 = 400K images of overlayed Foreground-Background images.
+  * 100 * (100 * 2) * 20 = 400K images of overlayed Foreground-Background images.
     Some of them are: 
     
-    <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/fg-bg.png' alt='Images width=200/>
+    <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/fg-bg.png' alt='Fg-Bg Images'/>
  
   * 400K masks of the Foreground-Background images
     Some of them are:
-    <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/fg-bg-mask.png' alt='Images width=200/>
+    <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/fg-bg-mask.png' alt='Depth Images'/>
 * These 400K images Foreground-Background images were used to produce the 400K depth images.
   Some of them are:
-  <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/depth.png' alt='Images width=200/>
-* Generate labels file for the dataset in the format:
- 
+  <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/depth.png' alt='Images'/>
+* Generate labels file for the dataset in the format:<a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/Labels_Genearation.ipynb'>Link</a>
+
+ | Background_Image_Path | Foreground_Image_Path | Fg-Bg_Image_Path | Fg-Bg-Mask_Image_Path  | Depth_Image_Path |
+ | --- | --- | --- | --- | --- |
  | /root_folder/background_img_name.jpg | /root_folder/foregound_img_name.png | /root_folder/fg_bg_img_name.jpg | /root_folder/mask_name.jpg | /root_folder/depth_img_name.jpg |
+ 
 * Compute the mean and std of the Foreground-Background images, their corresponding masks and depth images.<a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/Dataset_Mean_Std.ipynb'>Link</a>
 
 Results:
@@ -100,30 +103,25 @@ Results:
         └────── labels.txt
  
 ## Dataset Size:
-Total - 3.98GB
-
-Background Images - 1.2MB
-
-Foreground Images - 1.2MB
-
-Mask - 333KB
-
-Dataset - 3.92GB
-
+Total - 3.98GB <br/>
+Background Images - 1.2MB <br/>
+Foreground Images - 1.2MB <br/>
+Mask - 333KB <br/>
+Dataset - 3.92GB <br/>
 Labels - 52MB
 
 
 ## Some stuffs that helped decrease dataset size:
 * Saved all the overlayed images in JPG format.
-* Decreased image quality of the overlayed images to 30 from 100.
+* Decreased image quality of the overlayed images to 30 from 100.This decreased the dataset size to nearly half.
 * Saved all the overlayed masks as a final channel images since the masks were only black n white images.
 
-## Technique used for Overlaying the images:
+## <a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/others/Overlay_image_on_another.ipynb'>Technique used for Overlaying the images:</a>
 * Method 1: Since the background of the Foreground images was transparent, tried to create an image by replacing only those pixels in the background images with the pixels of the foreground images !< 5. This threshold was chosen after considering the fact that the transparent pixel in foreground image was white. This method worked for almost all images but failed for images where there were white patches on the foreground image.
 * Method 2: This time i tried to find the boundary of the foreground object but this too failed to create a proper boundary around objects in which there was a part of the foreground object's background enclosed by the object.
 * Final Method: In this method the PIL image library function paste was used to overlay the foreground image on the background. This method used the alpha component of the foreground images to overlay them on the background. From this i came to know that the alpha part of a PNG image stores the transparency information of the image.
 
-## Generation of Depth Images:
+## <a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/Depth_Images_Generation.ipynb'>Generation of Depth Images:</a>
 * Code Repository: <a href='https://github.com/ialhashim/DenseDepth'>High Quality Monocular Depth Estimation via Transfer Learning</a>
 * Using the trained model from the above repository, we generated the depth images.
 * This depth model used an encoder decoder architecture along with transfer learning using DenseNet.
