@@ -124,7 +124,7 @@ Labels - 52MB
 * Using the trained model from the above repository, we generated the depth images.
 * This depth model used an encoder decoder architecture along with transfer learning using DenseNet.
 * This depth model used was pretrained on NYU and KITTI dataset.
-* For my dataset i used the model weights for the NYU dataset since my dataset was similar to it in the sense that both consisted of images of interior of houses and humans.
+* For our dataset we used the model weights for the NYU dataset since my dataset was similar to it in the sense that both consisted of images of interior of houses and humans.
 * The model accepted images of size 480x640 and the output image size was half the input i.e 240x320. 
 * Our images were of size 224x224 and when sent directly to the model gave bad results.
 * Resizing the images to 480x640 gave good results.
@@ -132,8 +132,9 @@ Labels - 52MB
 *To avoid atleast one resize tried resizing the images to 448x448 to get the output image size of 224x224. This gave good depth images too.
 
 ## Team Members:
-Shilpa M <br/>
-Sushmitha M Katti <br/>
-Deeksha <br/>
-Noopur <br/>
-Srinivasan <br/>
+1. Shilpa M <br/>
+2. Sushmitha M Katti <br/>
+3. Deeksha <br/>
+4. Noopur <br/>
+5. Srinivasan <br/>
+We worked as a team and each of us generated 80K each of fg_bg, fg_bg_mask and depth_images
