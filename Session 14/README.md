@@ -78,7 +78,7 @@ Results:
         |   |       |      └──── Fg-Bg-Mask
         |   |       |      |     └───── fg-bg-mask<1-80k>.jpg
         |   |       |      └──── Depth
-        |   |       |      |     └────── depth<1-80k>.jpg\
+        |   |       |      |     └────── depth<1-80k>.jpg
         |   └───── data_part2.zip
         |   |      └───── data_2
         |   |       |      └───── Fg-Bg
@@ -116,8 +116,16 @@ Labels - 52MB
 
 ## <a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/others/Overlay_image_on_another.ipynb'>Technique used for Overlaying the images:</a>
 * Method 1: Since the background of the Foreground images was transparent, tried to create an image by replacing only those pixels in the background images with the pixels of the foreground images !< 5. This threshold was chosen after considering the fact that the transparent pixel in foreground image was white. This method worked for almost all images but failed for images where there were white patches on the foreground image.
+
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/method1.png' width=200 height=200 />
+
 * Method 2: This time i tried to find the boundary of the foreground object but this too failed to create a proper boundary around objects in which there was a part of the foreground object's background enclosed by the object.
+
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/method2.JPG' width=200 height=200 />
+
 * Final Method: In this method the PIL image library function paste was used to overlay the foreground image on the background. This method used the alpha component of the foreground images to overlay them on the background. From this i came to know that the alpha part of a PNG image stores the transparency information of the image.
+
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/final_method.png' width=200 height=200 />
 
 ## <a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/Depth_Images_Generation.ipynb'>Generation of Depth Images:</a>
 * Code Repository: <a href='https://github.com/ialhashim/DenseDepth'>High Quality Monocular Depth Estimation via Transfer Learning</a>
@@ -128,13 +136,14 @@ Labels - 52MB
 * The model accepted images of size 480x640 and the output image size was half the input i.e 240x320. 
 * Our images were of size 224x224 and when sent directly to the model gave bad results.
 * Resizing the images to 480x640 gave good results.
-* But this had the overhead of resizing the input as well as the ouput since the desired output image size was 224x224.
-*To avoid atleast one resize tried resizing the images to 448x448 to get the output image size of 224x224. This gave good depth images too.
+* But this had the overhead of resizing the input as well as the ouput since the desired output image size was 224x224. And hence generating depth images took a very long time.
+* To avoid atleast one resize tried resizing the images to 448x448 to get the output image size of 224x224. This gave good depth images too.
 
 ## Team Members:
 1. Shilpa M <br/>
 2. Sushmitha M Katti <br/>
 3. Deeksha <br/>
 4. Noopur <br/>
-5. Srinivasan <br/>
-We worked as a team and each of us generated 80K each of fg_bg, fg_bg_mask and depth_images
+5. Srinivasan G <br/>
+
+We worked as a team. Each of us generated 80K each of fg_bg, fg_bg_mask and depth_images
