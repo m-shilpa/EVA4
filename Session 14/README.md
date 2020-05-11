@@ -5,35 +5,16 @@
 
 * Collection of the images consisting of:
   * Background Images: 100 images of size 224x224 and image format JPG. The images are mostly of interior of houses.
-    Some of them are:
-    
-    <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/background.png' alt='Background Images'/>
   * Foreground Images: 100 images of random sizes but less than 120 and image format PNG. These images consisted of human beings.
-    Some of them are:
-    
-    <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/Foreground.png' alt='Foreground Images'/>
- 
 * Background of the foreground images were removed using Power Point
 * Masks of the foreground images were generated using gimp.
-  Some of them are:
-  
-  <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/Mask.png' />
-  
 * Overlay each of the foreground images randomly 20 times on each background images.
 * Horizontal Flip the foreground images and again overlap them randomly 20 times on each background images.
 * For each overlayed foreground image overlay it's corresponding mask at the same position on a 224x224 black image. This hence generates the mask of the corresponding overlayed images. <a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/data_creation-reduced_image_quality.ipynb'>Link to the code</a>
 * Now the dataset has a total of:
   * 100 * (100 * 2) * 20 = 400K images of overlayed Foreground-Background images.
-    Some of them are: 
-    
-    <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/fg-bg.png' alt='Fg-Bg Images'/>
- 
   * 400K masks of the Foreground-Background images
-    Some of them are:
-    <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/fg-bg-mask.png' alt='Depth Images'/>
 * These 400K images Foreground-Background images were used to produce the 400K depth images.
-  Some of them are:
-  <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/depth.png' alt='Images'/>
 * Generate labels file for the dataset in the format:<a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/Labels_Genearation.ipynb'>Link</a>
 
  | Background_Image_Path | Foreground_Image_Path | Fg-Bg_Image_Path | Fg-Bg-Mask_Image_Path  | Depth_Image_Path |
@@ -49,6 +30,31 @@ Results:
 | Fg-Bg |	[0.65830478, 0.61511271, 0.5740604 ] |	[0.24408717, 0.2542491, 0.26870159] |
 | Fg-Bg-Mask |	[0.04608837, 0.04608837, 0.04608837] |	[0.20544916, 0.20544916, 0.20544916] |
 | Depth-Images |	[0.50911522, 0.50911522, 0.50911522] |[0.28174302, 0.28174302, 0.28174302] |
+
+## Sample images
+Background images:
+
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/background.png' alt='Background Images'/>
+
+Foreground images:
+
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/Foreground.png' alt='Foreground Images'/>
+
+Foreground masks:
+
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/Mask.png' />
+
+Foreground-Background images:
+
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/fg-bg.png' alt='Fg-Bg Images'/>
+
+Foreground-Background masks:
+
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/fg-bg-mask.png' alt='Depth Images'/>
+
+Depth images:
+
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/images/depth.png' alt='Images'/>
 
 ## Final Dataset Folder Structure:
 
