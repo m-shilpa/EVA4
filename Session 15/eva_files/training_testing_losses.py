@@ -175,7 +175,8 @@ class Train_model():
 
     model.train()
     pbar = tqdm(train_loader)
-   
+    mask_coef = 0
+    ssim_index = 0
     for batch_idx, (bg,fg_bg,mask,depth) in enumerate(pbar):
 
       data = torch.cat((fg_bg,bg),1) 
@@ -188,7 +189,7 @@ class Train_model():
       
       loss1 = criterion1(mask_pred, mask.unsqueeze(1))
       loss2 =  criterion2(depth_pred, depth.unsqueeze(1)) 
-      loss = (loss1 + loss2)/2
+      loss = loss1 + loss2
       
       
       # Backpropagation
@@ -197,17 +198,16 @@ class Train_model():
 
       lr = optimizer.param_groups[0]['lr']
       pbar.set_description(desc= f'Epoch= {epoch+1} LR= {lr} Mask Loss={loss1.item()} Depth Loss={loss2.item()} Loss={loss.item()} Batch_id={batch_idx}')
-    
-    mask_iou = iou_cal(mask_pred,mask)
-    ssim_index =  Ssim_index(loss2.item())
+      mask_coef += dice_coefficient(mask_pred,mask, mask= True).item()
+      ssim_index +=  Ssim_index(loss2.item())
 
-    self.mask_ious1.append(mask_iou.item())
+    self.mask_ious1.append(mask_coef)
     self.ssim_indices1.append(ssim_index)
     self.mask_loss1.append(loss1.item())
     self.depth_loss1.append(loss2.item())
     self.train_loss1.append(loss.item())
 
-    self.mask_ious.append(mask_iou.item())
+    self.mask_ious.append(mask_coef.item())
     self.ssim_indices.append(ssim_index)
     self.mask_loss.append(loss1.item())
     self.depth_loss.append(loss2.item())
@@ -235,7 +235,7 @@ class Train_model():
     return self.stats,mask,depth,mask_pred, depth_pred
 
 
-def test(model, device, test_loader, optimizer, criterion1,criterion2,met):
+def test(model, device, test_loader, optimizer, criterion1,criterion2):
 
     import torch
     #Training & Testing Loops
