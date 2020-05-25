@@ -1,7 +1,7 @@
 # Mask and Depth Prediction
 
 ## Problem Statement:
-Build a model that predicts the mask and depth when Background images and Foreground-Background images are given as input.
+Build a dnn model that predicts the mask and depth when Background images and Foreground-Background images are given as input.
 
 ## Dataset:
   * 100 Background images
@@ -11,6 +11,23 @@ Build a model that predicts the mask and depth when Background images and Foregr
   
 ## Implementation:
   
+### Gist:
+* <b>Model:</b> Resnet-Unet 
+* <b>Input size:</b> 64x64x6 - bg and fgbg concatenated in the z-axis.
+* <b>Output sizes:</b> ( 64x64x1, 64x64x1 ) --> ( mask, depth )
+* <b>Total params:</b> 11,234,066
+* <b>Trainable params:</b> 11,234,066
+* <b>Non-trainable params:</b> 0
+* <b>Input size (MB):</b> 0.09
+* <b>Forward/backward pass size (MB):</b> 121.19
+* <b>Params size (MB):</b> 42.85
+* <b>Total Size (MB):</b> 164.14
+* <b>Time Taken/epoch:</b> 17 minutes
+* <b>Loss Function for Mask prediction:</b> BCEWithLogitsLoss
+* <b>Loss Function for Depth prediction:</b> SSIM
+* <b>Optimizer:</b> SGD with momentum
+* <b>Learing Rate:</b> StepLR starting at 0.01
+
 ## <a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/eva_files/customdata_loading.py'> Building the dataloader:</a>
 ### Workflow:
 * First the data files are unzipped.
@@ -24,36 +41,40 @@ The augmentations I applied to the dataset are:
 * The other augmentations I tried were RandomContrast and ToGray. These did not increase performance of the network and in fact increased the loss.
 * I didn’t apply much augmentation to the input images since we have to do depth estimation of the entire image. So distortions in the input image might affect the depth images prediction.  
 
+
+
+
 ## Building the DNN Model :
 
-* Initially i started off going through articles related to segmentation, like what models are used, how they are trained, what loss is used, how accuracy is calculated. Here I came across unet which mentioned in many of the websites.
+* Initially i started off going through articles related to segmentation, like what models are used, how they are trained, what loss is used, how accuracy is calculated. Here I came across unet which was mentioned in many of the websites.
 So I decided to try using unet as my architecture for predicting masks. The monocular depth estimation model which was used to generate our ground truth depth images used an encoder-decoder architecture similar to unet. So i decided to try using unet for predicting depth images too.
-* Initially I started off implementing a separate architecture for predicting the depth and mask images. I built a single unet architecture but trained individually for the depth and mask. This I tried to check if my model works for the dataset.
+* First i implemented a separate architecture for predicting each of the depth and mask images. I built a single unet architecture but trained individually for the depth and mask. This I tried to check if my model works for the dataset.
 * I heavily used tensorBoard while building my model to check for the correctness of the connections.
 
 <h2><a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/eva_files/dnn_architecture.py'>Architecture Details:</a> </h2>
 
-## Unet: 
+
+
+## Resnet-Unet : 
 
 * U-net was originally invented and first used for biomedical image segmentation. Its architecture can be thought of as an encoder network followed by a decoder network.
   * The encoder is the first half in the architecture. It usually is a classification network like VGG/ResNet where you apply convolution blocks followed by a maxpool downsampling to encode the input image into feature representations at multiple different levels.
-  *	The decoder is the second half of the architecture. The goal is to semantically project the discriminative features (lower resolution) learnt by the encoder onto the pixel space (higher resolution) to get a dense classification. The decoder consists of upsampling and concatenation followed by convolution blocks.
+  *	The decoder is the second half of the architecture. The goal is to semantically project the discriminative features (lower resolution) learnt by the encoder onto the pixel space (higher resolution) to get a dense classification. This is what makes the unet powerful. The decoder consists of upsampling and concatenation followed by convolution blocks.
 
-* I used a Resnet blocks in the Unet
-* So my model architecture consists of 1 encoder block and 2 decoder blocks – one for predicting the mask and other for predicting depth. So each of them will be specialized for predicting their respective outputs.
+* I used Resnet blocks in the Unet.I used them since the skip connections could allow the network to learn the small objects too and project them to the output.
+* So my model architecture consists of 1 encoder block and 2 decoder blocks – one for predicting the mask and other for predicting depth. So each of them will be specialized for predicting their respective outputs. Following is a high-level represntation of my model architecture.
 
 <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/arch.png' alt='simple representation of the model' width=400/>
 
 <details>
  <summary>A Detailed Representation of Model</summary>
  
-<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/unet-arch-2.png' alt='simple representation of the model'  width=400/>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/unet-arch-2.png' alt='simple representation of the model'  width=600/>
  
 </details>
 
 
 
-* I used resnet blocks since the skip connections could allow the network to learn the small objects too.
 * For downsampling, a convolution layer with kernel size 3 and stride 2 is used. Downsampling reduces the size of the input but increases the no. of channels compensating for the decrease in width and height of input
 * For upsampling, a transpose convolution layer is used with a kernel size 2. Upsampling increases the width and height of the input and reduces no. of channels performing the exact opposite task of downsampling. Transpose convolution increases the image (x,y) dimensions also maintaining a connectivity between the input and the output to it.Following demonstrates how the input is upsampled using transpose convolution.
 <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/transpose_conv.gif' alt='transpose convolution' width=400 />
@@ -62,17 +83,9 @@ So I decided to try using unet as my architecture for predicting masks. The mono
 * Other upsampling techniques that could be used are:
   * Bilinear: Uses all nearby pixels to calculate the pixel's value, using linear interpolations.
   * Bicubic: It also uses all nearby pixels to calculate the pixel's values, through polynomial interpolations. Usually produces a smoother surface than the previous techniques.
-  
-## Model Stats:  
 
-* Total params: 11,234,066
-* Trainable params: 11,234,066
-* Non-trainable params: 0
-* Input size (MB): 0.09
-* Forward/backward pass size (MB): 121.19
-* Params size (MB): 42.85
-* Total Size (MB): 164.14
-* Time Taken/epoch: 17 minutes
+
+
 
 <h2><a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/eva_files/training_testing_losses.py'>Saving the model:</a></h2>
 My internet speed was too low and it took almost 3 times the normal speed of execution for each epoch. So I saved my best model and loaded them later to continue execution. In addition to saving the model I also saved the loss values of the mask and depth to analyse the results. 
@@ -99,21 +112,7 @@ The loss value returned by SSIM is the structural dissimilarity between the inpu
  <br/>
 
 ## Plots of the Loss :
-<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/plot_avg_loss.png' width=200 /><img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/plot_depth.png' width=200 /><img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/plot_mask.png' width=200 />
-
-## Loss functions I tried and their result :
-###  BCEWithLogitsLoss , SSIM
-<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/final-mask.JPG' alt='ssim'/>
-<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/final-depth.JPG' alt='ssim'/>
-<h3>  MSELoss : </h3>
-<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/mse-mask.JPG' alt='ssim'/>
-<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/mse-depth.JPG' alt='ssim'/>
-<h3>SmoothL1 Loss, SSIM</h3>
-<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/smoothl1_ssim-mask.JPG' alt='ssim'/>
-<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/smoothl1_ssim-depth.JPG' alt='ssim'/>
-<h3> SSIM:</h3>
-<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/ssim-mask.JPG' alt='ssim'/>
-<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/ssim-depth.JPG' alt='ssim'/>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/plot_avg_loss.png' width=300 /><img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/plot_depth.png' width=300 /><img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/plot_mask.png' width=300 />
 
 ## Accuracy metric:
 <h3>Depth images:</h3>
@@ -122,8 +121,45 @@ Pixel-wise comparison or IOU may not be a good metric for measuring the accuracy
 <h3>Mask images:</h3> 
 
 Dice Coefficient can be the evaluation metric here. 
+
 Dice Coefficient = ( 2 * Area of Overlap ) / total number of pixels in both images.
+
 The mask consists of the background and foreground. The foreground is only 1 object. So Dice Coefficient between the target and the predicted images can be a good metric for evaluating the predicted mask
+
+## Results:
+* <b>Training:</b>
+  * Mask Loss: 0.0365
+  * Depth Loss: 0.0329
+  * Avg. Loss: 0.0347
+* <b>Testing:</b>
+  * Mask Loss: 0.0340
+  * Depth Loss: 0.0420
+  * Avg. Loss: 0.0380
+  * Dice Coefficient: 0.7517
+  * SSIM Index: 0.9158
+
+## Other Loss functions I tried and their result :
+###  Mask: BCEWithLogitsLoss , Depth: SSIM
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/final-mask.JPG' alt='ssim'/>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/final-depth.JPG' alt='ssim'/>
+<h3>  Mask: MSELoss, Depth: MSELoss </h3>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/mse-mask.JPG' alt='ssim'/>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/mse-depth.JPG' alt='ssim'/>
+<h3>Mask: SmoothL1 Loss, Depth: SSIM</h3>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/smoothl1_ssim-mask.JPG' alt='ssim'/>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/smoothl1_ssim-depth.JPG' alt='ssim'/>
+<h3> Mask: SSIM, Depth: SSIM</h3>
+
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/ssim-mask.JPG' alt='ssim'/>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/ssim-depth.JPG' alt='ssim'/>
+
+There were many more combination of the losses i implemented, images of whose i happened to not store them.
+ 
+Some points on the losses:
+* MSELoss blurs the output although the final loss value was pretty low. 
+* SmoothL1 loss was also similar to MSELoss. This maybe due to the similarity in the way the two losses are calculated. 
+* Losses based on pixel to pixel comparison didn't seem to work well with my model for predicting depth. 
+* A combination of the losses didn't produce extraordinary results. So using a single loss function each of the depth and mask seemed enough.
 
 ## Refernces: 
 * <a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/Final_Session_15.ipynb'>Final Notebook</a>
