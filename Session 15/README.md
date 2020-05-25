@@ -156,7 +156,8 @@ The mask consists of the background and foreground. The foreground is only 1 obj
 There were many more combination of the losses i implemented, images of whose i happened to not store them.
  
 Some points on the losses:
-* MSELoss blurs the output although the final loss value was pretty low. 
+* The above images were generated after training the model for 20 epochs each on 80K images each of bg,fgbg,mask,depth.
+* MSELoss blurs the output although the final loss value was pretty low. This may be because training using MSELoss follows a trajectory similar to linear interpolation. Alternative to MSELoss was the perceptual losses like SSIM which compares based on the quality similar to the human vision system.
 * SmoothL1 loss was also similar to MSELoss. This maybe due to the similarity in the way the two losses are calculated. 
 * Losses based on pixel to pixel comparison didn't seem to work well with my model for predicting depth. 
 * A combination of the losses didn't produce extraordinary results. So using a single loss function each of the depth and mask seemed enough.
