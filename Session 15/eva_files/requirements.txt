@@ -1,0 +1,5 @@
+
+kornia
+memory_profiler
+torchsummary
+git+https://github.com/albu/albumentations
