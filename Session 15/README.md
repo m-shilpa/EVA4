@@ -40,13 +40,17 @@ So I decided to try using unet as my architecture for predicting masks. The mono
 * I used a Resnet blocks in the Unet
 * So my model architecture consists of 1 encoder block and 2 decoder blocks – one for predicting the mask and other for predicting depth. So each of them will be specialized for predicting their respective outputs.
 
-<img src='' alt='simple representation of the model'/>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/arch.png' alt='simple representation of the model'/>
 <p align='center'>Fig: A simple representation of the model</p>
+
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/unet-arch-2.png' alt='simple representation of the model'/>
+<p align='center'>Fig: A detailed representation of the model</p>
 
 * I used resnet blocks since the skip connections could allow the network to learn the small objects too.
 * For downsampling, a convolution layer with kernel size 3 and stride 2 is used. Downsampling reduces the size of the input but increases the no. of channels compensating for the decrease in width and height of input
 * For upsampling, a transpose convolution layer is used with a kernel size 2. Upsampling increases the width and height of the input and reduces no. of channels performing the exact opposite task of downsampling. Transpose convolution increases the image (x,y) dimensions also maintaining a connectivity between the input and the output to it.Following demonstrates how the input is upsampled using transpose convolution.
-<img src='' alt='transpose convolution' />
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/transpose_conv.gif' alt='transpose convolution' />
+<p align='center'>Fig: Transpose Convolution</p>
 
 * Other upsampling techniques that could be used are:
   * Bilinear: Uses all nearby pixels to calculate the pixel's value, using linear interpolations.
@@ -73,22 +77,32 @@ I tried many loss functions but the ones which performed well were: Mask – BCE
 In this loss function, sigmoid is applied on the target followed by BCELoss.
 This is Binary cross entropy loss mostly used when the number of classes is 2. Here, i used BCEWithLogitsLoss for the mask since we can think of the background and foreground as the two classes of the mask image.
 The following shows the computation of BCEWithLogitsLoss:
-<img src= '' alt='bce'/>
+<img src= 'https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/bce.png' alt='bce'/>
 
 ### <b>SSIM – Structural SIMilarity :</b>
 This is a perceptual loss that measures the similarity between two inputs based on the luminance (I), contrast (C), and structure (S) of the two images.
 Patches of the images are taken and compared. 
 In pixel-wise comparison each pixel of the image1 is compared with corresponding pixels of image2.But in SSIM, a window size is choosen, say 5. So  now 5 pixels from all sides of the single pixel is taken to finally form a 11x11 patch. This patch is now compared with the corresponding patch in the other image. The comparison here is not pixel-wise but luminance (I), contrast (C), and structure (S) – wise. 
 The following is the formula for ssim:  
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/ssim-formula-1.png' alt='ssim1'/>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/ssim-formula-2.png' alt='ssim2'/>
+
 The loss value returned by SSIM is the structural dissimilarity between the inputs: 
-<img src='' alt='ssim'/>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/ssim-formula-3.png' alt='ssim3'/>
 
 ## Loss functions I tried and their result :
 ###  BCEWithLogitsLoss , SSIM
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/final-mask.JPG' alt='ssim'/>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/final-depth.JPG' alt='ssim'/>
 ### MSELoss : 
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/mse-mask.JPG' alt='ssim'/>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/mse-depth.JPG' alt='ssim'/>
 ### SmoothL1 Loss, SSIM
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/smoothl1_ssim-mask.JPG' alt='ssim'/>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/smoothl1_ssim-depth.JPG' alt='ssim'/>
 ### SSIM:
-
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/ssim-mask.JPG' alt='ssim'/>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/ssim-depth.JPG' alt='ssim'/>
 
 ## Accuracy metric:
 <h3>Depth images:</h3>
@@ -100,7 +114,10 @@ Dice Coefficient can be the evaluation metric here.
 Dice Coefficient = ( 2 * Area of Overlap ) / total number of pixels in both images.
 The mask consists of the background and foreground. The foreground is only 1 object. So Dice Coefficient between the target and the predicted images can be a good metric for evaluating the predicted mask
 
-
+## Refernces: 
+* <a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/Final_Session_15.ipynb'>Final Notebook</a>
+* <a href='https://github.com/mshilpaa/EVA4/tree/master/Session%2015/eva_files'>Code Files</a>
+* <a href=''></a>
 
 
 
