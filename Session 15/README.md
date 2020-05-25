@@ -32,13 +32,12 @@ So I decided to try using unet as my architecture for predicting masks. The mono
 * I heavily used tensorBoard while building my model to check for the correctness of the connections.
 
 <h2><a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/eva_files/dnn_architecture.py'>Architecture Details:</a> </h2>
+
 ## Unet: 
 
 * U-net was originally invented and first used for biomedical image segmentation. Its architecture can be thought of as an encoder network followed by a decoder network.
-
-•	The encoder is the first half in the architecture. It usually is a classification network like VGG/ResNet where you apply convolution blocks followed by a maxpool downsampling to encode the input image into feature representations at multiple different levels.
-
-•	The decoder is the second half of the architecture. The goal is to semantically project the discriminative features (lower resolution) learnt by the encoder onto the pixel space (higher resolution) to get a dense classification. The decoder consists of upsampling and concatenation followed by convolution blocks.
+  * The encoder is the first half in the architecture. It usually is a classification network like VGG/ResNet where you apply convolution blocks followed by a maxpool downsampling to encode the input image into feature representations at multiple different levels.
+  *	The decoder is the second half of the architecture. The goal is to semantically project the discriminative features (lower resolution) learnt by the encoder onto the pixel space (higher resolution) to get a dense classification. The decoder consists of upsampling and concatenation followed by convolution blocks.
 
 * I used a Resnet blocks in the Unet
 * So my model architecture consists of 1 encoder block and 2 decoder blocks – one for predicting the mask and other for predicting depth. So each of them will be specialized for predicting their respective outputs.
@@ -95,9 +94,12 @@ The following is the formula for ssim:
 <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/ssim-formula-1.png' alt='ssim1'/>
 <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/ssim-formula-2.png' alt='ssim2'/>
 
-The loss value returned by SSIM is the structural dissimilarity between the inputs: 
-
+The loss value returned by SSIM is the structural dissimilarity between the inputs: <br/>
 <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/ssim-formula-3.png' alt='ssim3'/>
+ <br/>
+
+## Plots of the Loss :
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/plot_avg_loss.png' width=200 /><img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/plot_depth.png' width=200 /><img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/plot_mask.png' width=200 />
 
 ## Loss functions I tried and their result :
 ###  BCEWithLogitsLoss , SSIM
@@ -126,7 +128,7 @@ The mask consists of the background and foreground. The foreground is only 1 obj
 ## Refernces: 
 * <a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/Final_Session_15.ipynb'>Final Notebook</a>
 * <a href='https://github.com/mshilpaa/EVA4/tree/master/Session%2015/eva_files'>Code Files</a>
-* <a href='https://github.com/mshilpaa/EVA4/tree/master/Session%2015/others'></a>
+* <a href='https://github.com/mshilpaa/EVA4/tree/master/Session%2015/others'>Implementation of other Losses</a>
 
 
 
