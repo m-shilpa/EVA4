@@ -5,9 +5,9 @@ Build a dnn model that predicts the depth map as well as a mask for the foregrou
 
 ## Dataset:
   * 100 Background images
-  * 400K Foreground-Background images 
-  * 400K Mask images 
-  * 400K Depth images
+  * 400K Foreground-Background images ( 100 foreground images placed at 20 random locations on the 100 background images )
+  * 400K Mask images of the Foreground-Background images
+  * 400K Depth images of the Foreground-Background images
   
 ## Implementation:
   
@@ -37,20 +37,30 @@ Build a dnn model that predicts the depth map as well as a mask for the foregrou
 
 ## Data Augmentations:
 The augmentations I applied to the dataset are: 
-* Fg-Bg and Bg – Resize(to 64x64), Cutout,Normalize,ToTensor
+* Fg-Bg and Bg – Resize(from 224x224 to 64x64), Cutout,Normalize,ToTensor
 * Mask,depth – Resize,ToTensor
 * The other augmentations I tried were RandomContrast and ToGray. These did not increase performance of the network and in fact increased the loss.
-* I didn’t apply much augmentation to the input images since we have to do depth estimation of the entire image. So distortions in the input image might affect the depth images prediction.  
+* I had to resize my images since bigger size images needed more memory and reducing the batch size to make this possible would increase training time. So i resized my images to 64x64.
+* I didn’t apply much augmentation to the input images. Augmentations like scaling, cropping could not be applied since we have to do depth estimation of the entire image. Other distortions in the input image might also affect the depth images prediction.  
 
 
 
 
-## Building the DNN Model :
+## Jouney towards building the final DNN Model :
 
-* Initially i started off going through articles related to segmentation, like what models are used, how they are trained, what loss is used, how accuracy is calculated. Here I came across unet which was mentioned in many of the websites.
-So I decided to try using unet as my architecture for predicting masks. The monocular depth estimation model which was used to generate our ground truth depth images used an encoder-decoder architecture similar to unet. So i decided to try using unet for predicting depth images too.
-* First i implemented a separate architecture for predicting each of the depth and mask images. I built a single unet architecture but trained individually for the depth and mask. This I tried to check if my model works for the dataset.
-* I heavily used tensorBoard while building my model to check for the correctness of the connections.
+* Initially i started off going through articles related to segmentation, like what models are used, how they are trained, what loss is used, how accuracy is calculated. 
+* I had many doubts like how an image can be genrated from the dnn since till now we were only predicting labels, how loss is propagated backward, how to give 2 inputs to the model should it be given separately or concatenated, what model to use...
+* While going through many articles i came across siamese network which took two images as input and gave the differnece between the two input images as the output. So this network have a 'Y'-like architecture. Since the input to my model was also fg-bg and bg images i thought fg_bg - bg would give me the fg image. So i wanted to try this architecture. But before this i manually tried doing the fg_bg -bg calculation and the output was not the fg but a mess which had not even a little essence of the original images. So dropped the idea.
+* Next i thought of implementing a network like the region proposal network in mask-rcnn. Mask-rcnn produced two outputs, the bounding boxes and the mask. The RPN produced feature-rich output that it could be used to prdict masks too. In a similar way i thought of producing depth images too from the RPN. When i started building the model, there were a lot of confusions like how many layers, number of channels etc and the deadline was coming near too.
+* With a lot of these ideas and confusions i simply tried resnet18 to see what would be the result. I tried it for both depth and mask. To my surprise the masks predicted was fine but the depth images were bad but not as much as what i had imagined. 
+* The monocular depth estimation model which was used to generate our ground truth depth images used an encoder-decoder architecture.So i tried an encoder-decoder architecture for the depth. The performance was good.
+* At this point, i got a clearer idea of things and lot less confusions.
+* For building the model TensorBoard helped me a lot. I could clearly see all the layers and their connections in tensorboard allowing me to check and correct my mistakes.
+* Next i combined both the models and trained them in a desire to see pretty good results. But the end result was good depth images but completely nothing for the mask. This i suppose was due to the way loss was backpropagated.
+* So i thought of trying the encoder-decoder network even to the mask.
+* While browsing through many I came across unet which was mentioned in many of the websites but till then i couldn't try it due to time constraints. But later when the assignment submission date got postponed, i decided to try unet. 
+* So finally i built my unet architecture with 11 lakh parameters.
+
 
 <h2><a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/eva_files/dnn_architecture.py'>Architecture Details:</a> </h2>
 
@@ -87,7 +97,8 @@ So I decided to try using unet as my architecture for predicting masks. The mono
 
 
 <a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/eva_files/training_testing_losses.py'><h2>Training:</h2> </a>
-I trained my model on a sample of the dataset. I used 80k images each (bg,fgbg,mask,depth), based on the result i later trained the model on the entire dataset using the final list of hyperparameters.
+* The input to my model was the fg-bg, bg concatenated in z-axis.
+* I trained my model on a sample of the dataset. I used 80k images each (bg,fgbg,mask,depth), based on the result i later trained the model on the entire dataset using the final list of hyperparameters. Doing this took lesser time and allowed me to try different combinations of the hyperparameters.
 
 <h3>Saving the model:</a></h3>
 My internet speed was too low and sometimes it took almost 3 times the normal speed of execution for each epoch. So I saved my best model and loaded them later to continue execution. In addition to saving the model I also saved the loss values of the mask and depth to analyse the results. 
@@ -164,8 +175,12 @@ Some points on the losses:
 * The above images were generated after training the model for 20 epochs each on 80K images each (bg,fgbg,mask,depth).
 * MSELoss blurs the output although the final loss value was pretty low. This may be because training using MSELoss follows a trajectory similar to linear interpolation. Alternative to MSELoss was the perceptual losses like SSIM which compares based on the quality similar to the human vision system.
 * SmoothL1 loss was also similar to MSELoss. This maybe due to the similarity in the way the two losses are calculated. 
-* Losses based on pixel to pixel comparison didn't seem to work well with my model for predicting depth. 
+* Losses based on pixel to pixel comparison didn't seem to work well for predicting depth. 
 * A combination of the losses didn't produce extraordinary results. So using a single loss function each of the depth and mask seemed enough.
+* Using the same loss function for both didn't give good results.
+* I used different window sizes for SSIM but these didn't give good results either.
+* Finally the one that gave good results was BCEWithLogitsLoss and SSIM.
+* After trying so many loss functions i truly felt like a loss engineering like how Rohan had told.
 
 ## Refernces: 
 * <a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/Final_Session_15.ipynb'>Final Notebook</a>
