@@ -139,11 +139,12 @@ The mask consists of the background and foreground. The foreground is only 1 obj
   * Avg. Loss: 0.0380
   * Dice Coefficient: 0.7517
   * SSIM Index: 0.9158
-
-## Other Loss functions I tried and their result :
-###  Mask: BCEWithLogitsLoss , Depth: SSIM
 <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/final-mask.JPG' alt='ssim'/>
 <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/final-depth.JPG' alt='ssim'/>
+
+## Other Loss functions I tried and their result :
+
+
 <h3>  Mask: MSELoss, Depth: MSELoss </h3>
 <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/mse-mask.JPG' alt='ssim'/>
 <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/mse-depth.JPG' alt='ssim'/>
