@@ -129,6 +129,7 @@ Dice Coefficient = ( 2 * Area of Overlap ) / total number of pixels in both imag
 The mask consists of the background and foreground. The foreground is only 1 object. So Dice Coefficient between the target and the predicted images can be a good metric for evaluating the predicted mask
 
 <h2><a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/Final_Session_15.ipynb'>Results:</a></h2>
+
 * <b>Training:</b>
   * Mask Loss: 0.0365
   * Depth Loss: 0.0329
@@ -139,7 +140,7 @@ The mask consists of the background and foreground. The foreground is only 1 obj
   * Avg. Loss: 0.0380
   * Dice Coefficient: 0.7517
   * SSIM Index: 0.9158
- <h3>Output of the network: </h3> 
+* <h3>Output of the network: </h3> 
 <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/final-mask.JPG' alt='ssim'/>
 <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/final-depth.JPG' alt='ssim'/>
 
