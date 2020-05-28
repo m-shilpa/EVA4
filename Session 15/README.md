@@ -3,7 +3,8 @@
 ## Problem Statement:
 Build a dnn model that predicts the depth map as well as a mask for the foreground object given background and foreground-background images.
 
-## Dataset:
+<h2><a href='https://github.com/mshilpaa/EVA4/tree/master/Session%2014'> Dataset: </a></h2>
+
   * 100 Background images
   * 400K Foreground-Background images ( 100 foreground images placed at 20 random locations on the 100 background images )
   * 400K Mask images of the Foreground-Background images
@@ -51,10 +52,10 @@ The augmentations I applied to the dataset are:
 * Initially i started off going through articles related to segmentation, like what models are used, how they are trained, what loss is used, how accuracy is calculated. 
 * I had many doubts like how an image can be genrated from the dnn since till now we were only predicting labels, how loss is propagated backward, how to give 2 inputs to the model should it be given separately or concatenated, what model to use...
 * While going through many articles i came across siamese network which took two images as input and gave the differnece between the two input images as the output. So this network have a 'Y'-like architecture. Since the input to my model was also fg-bg and bg images i thought fg_bg - bg would give me the fg image. So i wanted to try this architecture. But before this i manually tried doing the fg_bg -bg calculation and the output was not the fg but a mess which had not even a little essence of the original images. So dropped the idea.
-* Next i thought of implementing a network like the region proposal network in mask-rcnn. Mask-rcnn produced two outputs, the bounding boxes and the mask. The RPN produced feature-rich output that it could be used to prdict masks too. In a similar way i thought of producing depth images too from the RPN. When i started building the model, there were a lot of confusions like how many layers, number of channels etc and the deadline was coming near too.
+* Next i thought of implementing a network like the region proposal network in mask-rcnn. Mask-rcnn produced two outputs, the bounding boxes and the mask. The RPN produced feature-rich output that it could be used to prdict masks too. In a similar way i thought of producing depth images too from the RPN. When i started building the model, there were a lot of confusions like how many layers, number of channels, the RPN in mask-rcnn used bounding boxes too, so i had to build one without it and the deadline was coming near too.
 * With a lot of these ideas and confusions i simply tried resnet18 to see what would be the result. I tried it for both depth and mask. To my surprise the masks predicted was fine but the depth images were bad but not as much as what i had imagined. 
 * The monocular depth estimation model which was used to generate our ground truth depth images used an encoder-decoder architecture.So i tried an encoder-decoder architecture for the depth. The performance was good.
-* At this point, i got a clearer idea of things and lot less confusions.
+* At this point, i got a clearer idea of things and lot less confusions.Also the deadline had got extended too.
 * For building the model TensorBoard helped me a lot. I could clearly see all the layers and their connections in tensorboard allowing me to check and correct my mistakes.
 * Next i combined both the models and trained them in a desire to see pretty good results. But the end result was good depth images but completely nothing for the mask. This i suppose was due to the way loss was backpropagated.
 * So i thought of trying the encoder-decoder network even to the mask.
@@ -75,12 +76,12 @@ The augmentations I applied to the dataset are:
 * I used Resnet blocks in the Unet since the skip connections could allow the network to learn the small objects too and project them to the output.
 * My dnn architecture consists of 1 encoder block and 2 decoder blocks – one for predicting the mask and the other for predicting depth. So each of them will be specialized for predicting their respective outputs. Following is a high-level represntation of my dnn architecture.
 
-<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/arch.png' alt='simple representation of the model' width=400/>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/arch1.png' alt='simple representation of the model' width=400/>
 
 <details>
  <summary>A Detailed Representation of Model</summary>
  
-<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/unet-arch-2.png' alt='simple representation of the model'  width=600/>
+<img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/unet-arch-2.png' alt='simple representation of the model'  width=1000/>
  
 </details>
 
@@ -155,7 +156,7 @@ The mask consists of the background and foreground. The foreground is only 1 obj
 <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/final-mask.JPG' alt='ssim'/>
 <img src='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/images/final-depth.JPG' alt='ssim'/>
 
-## Other Loss functions I tried and their result :
+<h2><a href='https://github.com/mshilpaa/EVA4/tree/master/Session%2015/others'> Other Loss functions I tried and their result :</a></h2>
 
 
 <h3>  Mask: MSELoss, Depth: MSELoss </h3>
@@ -182,11 +183,17 @@ Some points on the losses:
 * Finally the one that gave good results was BCEWithLogitsLoss and SSIM.
 * After trying so many loss functions i truly felt like a loss engineering like how Rohan had told.
 
-## Refernces: 
+## Code Files: 
 * <a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2015/Final_Session_15.ipynb'>Final Notebook</a>
-* <a href='https://github.com/mshilpaa/EVA4/tree/master/Session%2015/eva_files'>Code Files</a>
+* <a href='https://github.com/mshilpaa/EVA4/tree/master/Session%2015/eva_files'>Code modules</a>
 * <a href='https://github.com/mshilpaa/EVA4/tree/master/Session%2015/others'>Implementation of other Losses</a>
 
+## References:
+* <a href='https://towardsdatascience.com/u-net-b229b32b4a71'>UNet</a>
+* <a href='http://www.cs.toronto.edu/~jsnell/assets/perceptual_similarity_metrics_icip_2017.pdf'>LEARNING TO GENERATE IMAGES WITH PERCEPTUAL SIMILARITY METRICS</a>
+* <a href='https://medium.com/activating-robotic-minds/up-sampling-with-transposed-convolution-9ae4f2df52d0'>Up-sampling with Transposed Convolution</a>
+* <a href='https://discuss.pytorch.org/'>https://discuss.pytorch.org/</a>
+* <a href='https://torchgeometry.readthedocs.io/en/latest/losses.html'>Kornia</a>
 
 
   
