@@ -28,8 +28,8 @@ Results:
 | Data |	Mean |	STD |
 | --- | --- | --- |
 | Fg-Bg |	[0.65830478, 0.61511271, 0.5740604 ] |	[0.24408717, 0.2542491, 0.26870159] |
-| Fg-Bg-Mask |	[0.04608837, 0.04608837, 0.04608837] |	[0.20544916, 0.20544916, 0.20544916] |
-| Depth-Images |	[0.50911522, 0.50911522, 0.50911522] |[0.28174302, 0.28174302, 0.28174302] |
+| Fg-Bg-Mask |	[0.04608837] |	[0.20544916] |
+| Depth-Images |	[0.50911522] |[0.28174302] |
 
 ## Sample images
 Background images:
@@ -118,7 +118,8 @@ Labels - 52MB
 ## Some stuffs that helped decrease dataset size:
 * Saved all the overlayed images in JPG format.
 * Decreased image quality of the overlayed images to 30 from 100.This decreased the dataset size to nearly half.
-* Saved all the overlayed masks as a final channel images since the masks were only black n white images.
+* Saved all the overlayed masks as a final 1 channel images since the masks were only black n white images.
+
 
 ## <a href='https://github.com/mshilpaa/EVA4/blob/master/Session%2014/others/Overlay_image_on_another.ipynb'>Technique used for Overlaying the images:</a>
 * Method 1: Since the background of the Foreground images was transparent, tried to create an image by replacing only those pixels in the background images with the pixels of the foreground images !< 5. This threshold was chosen after considering the fact that the transparent pixel in foreground image was white. This method worked for almost all images but failed for images where there were white patches on the foreground image.
